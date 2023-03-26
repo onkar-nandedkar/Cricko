@@ -34,23 +34,27 @@ public class TwoPlayer extends AppCompatActivity {
     MaterialCardView card1, card2, card4, card6;
     TextView scoreBoard;
     int stateVals[] = {1, 2, 4, 6};
+    int target = 0;
     boolean batFirst;
     boolean inningsFirst = true;
     String playerID, oppID;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://cricko-16e58-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("player");
     Player myPlayer, oppPlayer;
     Button go;
+    TextView status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_two_player);
-        TextView status = (TextView) findViewById(R.id.status);
+        status = (TextView) findViewById(R.id.status);
         playerID = getIntent().getExtras().getString("playerID");
         oppID = getIntent().getExtras().getString("oppID");
-
+        batFirst = getIntent().getExtras().getBoolean("batting");
         myPlayer = new Player(playerID);
         oppPlayer = new Player(oppID);
-
+        if(!batFirst){
+            status.setText("Bowling");
+        }
         Log.e("OPP ID", oppID);
         Toast.makeText(getApplicationContext(), oppID, Toast.LENGTH_SHORT).show();
         random = new Random();
@@ -145,6 +149,7 @@ public class TwoPlayer extends AppCompatActivity {
                     Log.e("JAMALGOTA", Integer.toString(state)+" vs " + Integer.toString(oppPlayer.state) + " Mai jaldi khela");
                     //Toast.makeText( getApplicationContext(), Integer.toString(state)+" vs " + Integer.toString(oppPlayer.state) + " Mai jaldi khela", Toast.LENGTH_LONG).show();
                     updateCardColors( state, oppPlayer.state);
+                    updateScoreBoard(state, oppPlayer.state);
                     go.setEnabled(true);
                 }
             }
@@ -155,10 +160,50 @@ public class TwoPlayer extends AppCompatActivity {
             }
         });
     }
-    int check = 10;
     boolean oppPlayed = false;
-    int cDown = 5;
 
+
+    void updateScoreBoard(int myState, int oppState){
+        if(inningsFirst){
+
+            if(myState == oppState){
+
+                if(batFirst){status.setText("Bowling");}
+                else{status.setText("Batting");}
+                target++;
+                scoreBoard.setText("Runs remaining: " + Integer.toString(target));
+                inningsFirst=false;
+                return;
+            }
+            if(batFirst){
+                target += myState;
+                scoreBoard.setText("Your score is: " + Integer.toString(target));
+            }
+            else{
+                target += oppState;
+                scoreBoard.setText("Opponent Score: " + Integer.toString(target));
+            }
+        }
+        else{
+
+           if(myState == oppState){
+               if(batFirst){scoreBoard.setText("You Won :)");}
+               else{scoreBoard.setText("You Lost :(");}
+           }
+           if(!batFirst){
+               target -= myState;
+               if(target < 0){
+                   scoreBoard.setText("You Won :)");
+                   return;
+               }
+           }
+           else{
+               target -= oppState;
+               if(target < 0){ scoreBoard.setText("You Lost :(");return;}
+           }
+            scoreBoard.setText("Runs remaining: " + Integer.toString(target));
+        }
+    }
     void updateCard(MaterialCardView materialCardView, int color){
         if(color == 0){materialCardView.setStrokeColor(getResources().getColor(R.color.white));}
         else if(color == 1){materialCardView.setStrokeColor(getResources().getColor(R.color.purple_200));}
@@ -198,7 +243,7 @@ public class TwoPlayer extends AppCompatActivity {
                                 // Stuff that updates the UI
                                 go.setEnabled(true);
                                 updateCardColors(state, oppPlayer.state);
-
+                                updateScoreBoard(state, oppPlayer.state);
                             }
                         });
                     }

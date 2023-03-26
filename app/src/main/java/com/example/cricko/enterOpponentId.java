@@ -43,9 +43,12 @@ public class enterOpponentId extends AppCompatActivity {
                         if(snapshot.exists()){
                             valid = true;
                             status.setText("Status: Done");
+
                             Intent intent = new Intent(enterOpponentId.this, TwoPlayer.class);
                             intent.putExtra("playerID", id);
                             intent.putExtra("oppID", oppId);
+                            if(id.compareTo(oppId) < 0){intent.putExtra("batting", true);}
+                            else{intent.putExtra("batting", false);}
                             startActivity(intent);
                         }
                         else{
@@ -63,7 +66,6 @@ public class enterOpponentId extends AppCompatActivity {
                 opponentId.setText("");
             }
         });
-
 
 
     }
