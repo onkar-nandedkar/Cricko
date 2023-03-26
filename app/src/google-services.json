@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "944661849776",
+    "project_id": "cricko-16e58",
+    "storage_bucket": "cricko-16e58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:944661849776:android:7ba06a97cfbe69c9b17d75",
+        "android_client_info": {
+          "package_name": "com.example.cricko"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "944661849776-r2dhi1vfpdhuo7jkskmcm246mj17fs6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjzBEl1D3yV5dtFHEVfIbQx54OKKzQEt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "944661849776-r2dhi1vfpdhuo7jkskmcm246mj17fs6j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
